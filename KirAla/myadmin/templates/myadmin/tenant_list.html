@@ -1,0 +1,44 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Tenants</h1>
+
+        <div class="card-body">
+            <table id="datatablesSimple" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Age</th>
+                        <th>National ID</th>
+                        <th>Employment Status</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Age</th>
+                        <th>National ID</th>
+                        <th>Employment Status</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for tenant in tenants %}
+                    <tr>
+                        <td>{{ tenant.user.first_name }}</td>
+                        <td>{{ tenant.user.last_name }}</td>
+                        <td>{{ tenant.age }}</td>
+                        <td>{{ tenant.national_id }}</td>
+                        <td>{{ tenant.employment_status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
