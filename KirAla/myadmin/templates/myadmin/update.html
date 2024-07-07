@@ -1,0 +1,67 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-4 ">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active">Profile</li>
+</ol>
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h2 style="color: white;">Profile</h2>
+        </div>
+        <div class="card-body">
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="inputUsername" name="username" type="text" placeholder="Kullanıcı Adı"
+                        value="{{ user_form.instance.username }}" required />
+                    <label for="inputUsername">Kullanıcı Adı</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="inputFirstName" name="first_name" type="text" placeholder="Ad"
+                        value="{{ user_form.instance.first_name }}" required />
+                    <label for="inputFirstName">Ad</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="inputLastName" name="last_name" type="text" placeholder="Soyad"
+                        value="{{ user_form.instance.last_name }}" required />
+                    <label for="inputLastName">Soyad</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="inputEmail" name="email" type="email" placeholder="E-posta"
+                        value="{{ user_form.instance.email }}" required />
+                    <label for="inputEmail">E-posta</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="inputPhoneNumber" name="phone_number" type="text"
+                        placeholder="Telefon Numarası" value="{{ user_form.instance.phone_number }}" />
+                    <label for="inputPhoneNumber">Telefon Numarası</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="inputCompanyName" name="company_name" type="text"
+                        placeholder="Firma Adı" value="{{ user_form.instance.landlord.company_name }}" />
+                    <label for="inputCompanyName">Firma Adı</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="inputBusinessPhone" name="business_phone" type="text"
+                        placeholder="Firma Telefon Numarası" value="{{ user_form.instance.landlord.business_phone }}" />
+                    <label for="inputBusinessPhone">Firma Telefon Numarası</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="inputAddress" name="address" type="text" placeholder="Adres"
+                        value="{{ user_form.instance.landlord.address }}" />
+                    <label for="inputAddress">Adres</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Güncelle</button>
+                <a class="btn btn-primary" href="{% url 'myadmin:myadmin_password_change' %}">Şifre Değiştir</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

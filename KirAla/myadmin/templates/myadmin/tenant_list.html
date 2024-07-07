@@ -1,8 +1,17 @@
 {% extends 'myadmin/base.html' %}
 {% load static %}
 
-{% block content %}
 
+{% block breadcrumb %}
+
+<ol class="breadcrumb mb-4 ">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active">Current Page</li>
+</ol>
+{% endblock %}
+
+
+{% block content %}
     <div class="container-fluid px-4">
         <h1 class="mt-4">Tenants</h1>
 
