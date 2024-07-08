@@ -1,0 +1,14 @@
+{% extends 'myadmin/base.html' %}
+
+{% block content %}
+<h1>Create Property - Step 2</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <h2>Property Details</h2>
+    {{ details_form.as_p }}
+
+    <button type="submit" name="submit">Submit</button>
+</form>
+{% endblock %}

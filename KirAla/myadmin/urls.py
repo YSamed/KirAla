@@ -1,10 +1,11 @@
-from django.urls import path
+from django.urls import path ,include
 from django.contrib.auth import views as auth_views
 from . import views
 
 app_name = 'myadmin'
 
 urlpatterns = [
+    path('properties/', include('properties.urls')),
     path('index/', views.index, name='index'),
     path('', views.myadmin_login, name='myadmin_login'),
     path('logout/', views.myadmin_logout, name='myadmin_logout'),

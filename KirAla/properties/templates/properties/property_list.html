@@ -1,0 +1,48 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-4 ">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active">Property List</li>
+
+</ol>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Tenants</h1>
+
+        <div class="card-body">
+            <table id="datatablesSimple" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>is_rented</th>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th>Detail</th>
+                    </tr>
+                </thead>
+                <tfoot>
+
+                </tfoot>
+                <tbody>
+                    {% for property in all_properties %}
+                    <tr>
+                        <td>{{ property.title }}</td>
+                        <td>{{ property.is_rented }}</td>
+                        <td>{{ property.location }}</td>
+                        <td>{{ property.price }}</td>
+                        <td>
+                            <a href="{% url 'properties:property_detail' property.pk %}" class="btn btn-primary btn-sm">View Details</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

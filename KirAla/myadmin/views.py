@@ -28,10 +28,12 @@ def myadmin_login(request):
             messages.error(request, 'Kullanıcı adı veya şifre yanlış.')
     return render(request, 'myadmin/login.html')
 
+
 @login_required
 def myadmin_logout(request):
     logout(request)
     return redirect('myadmin:myadmin_login')
+
 
 def myadmin_register(request):
     if request.method == 'POST':
@@ -85,7 +87,7 @@ def myadmin_update(request):
     return render(request, 'myadmin/update.html', {'user_form': user_form, 'landlord_form': landlord_form})
 
 
-
+@login_required
 def myadmin_password_change(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
