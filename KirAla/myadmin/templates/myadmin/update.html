@@ -8,7 +8,6 @@
 </ol>
 {% endblock %}
 
-
 {% block content %}
 <div class="container mt-4">
     <div class="card">
@@ -16,50 +15,114 @@
             <h2 style="color: white;">Profile</h2>
         </div>
         <div class="card-body">
+            {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
             <form method="POST" novalidate>
                 {% csrf_token %}
                 <div class="form-floating mb-3">
-                    <input class="form-control" id="inputUsername" name="username" type="text" placeholder="Kullanıcı Adı"
+                    <input class="form-control {% if user_form.username.errors %}is-invalid{% endif %}" id="inputUsername" name="username" type="text" placeholder="Username"
                         value="{{ user_form.instance.username }}" required />
-                    <label for="inputUsername">Kullanıcı Adı</label>
+                    <label for="inputUsername">Username</label>
+                    {% if user_form.username.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in user_form.username.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="form-floating mb-3">
-                    <input class="form-control" id="inputFirstName" name="first_name" type="text" placeholder="Ad"
+                    <input class="form-control {% if user_form.first_name.errors %}is-invalid{% endif %}" id="inputFirstName" name="first_name" type="text" placeholder="First Name"
                         value="{{ user_form.instance.first_name }}" required />
-                    <label for="inputFirstName">Ad</label>
+                    <label for="inputFirstName">First Name</label>
+                    {% if user_form.first_name.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in user_form.first_name.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="form-floating mb-3">
-                    <input class="form-control" id="inputLastName" name="last_name" type="text" placeholder="Soyad"
+                    <input class="form-control {% if user_form.last_name.errors %}is-invalid{% endif %}" id="inputLastName" name="last_name" type="text" placeholder="Last Name"
                         value="{{ user_form.instance.last_name }}" required />
-                    <label for="inputLastName">Soyad</label>
+                    <label for="inputLastName">Last Name</label>
+                    {% if user_form.last_name.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in user_form.last_name.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="form-floating mb-3">
-                    <input class="form-control" id="inputEmail" name="email" type="email" placeholder="E-posta"
+                    <input class="form-control {% if user_form.email.errors %}is-invalid{% endif %}" id="inputEmail" name="email" type="email" placeholder="Email"
                         value="{{ user_form.instance.email }}" required />
-                    <label for="inputEmail">E-posta</label>
+                    <label for="inputEmail">Email</label>
+                    {% if user_form.email.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in user_form.email.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="form-floating mb-3">
-                    <input class="form-control" id="inputPhoneNumber" name="phone_number" type="text"
-                        placeholder="Telefon Numarası" value="{{ user_form.instance.phone_number }}" />
-                    <label for="inputPhoneNumber">Telefon Numarası</label>
+                    <input class="form-control {% if user_form.phone_number.errors %}is-invalid{% endif %}" id="inputPhoneNumber" name="phone_number" type="text"
+                        placeholder="Phone Number" value="{{ user_form.instance.phone_number }}" />
+                    <label for="inputPhoneNumber">Phone Number</label>
+                    {% if user_form.phone_number.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in user_form.phone_number.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="form-floating mb-3">
-                    <input class="form-control" id="inputCompanyName" name="company_name" type="text"
-                        placeholder="Firma Adı" value="{{ user_form.instance.landlord.company_name }}" />
-                    <label for="inputCompanyName">Firma Adı</label>
+                    <input class="form-control {% if user_form.landlord.company_name.errors %}is-invalid{% endif %}" id="inputCompanyName" name="company_name" type="text"
+                        placeholder="Company Name" value="{{ user_form.instance.landlord.company_name }}" />
+                    <label for="inputCompanyName">Company Name</label>
+                    {% if user_form.landlord.company_name.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in user_form.landlord.company_name.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="form-floating mb-3">
-                    <input class="form-control" id="inputBusinessPhone" name="business_phone" type="text"
-                        placeholder="Firma Telefon Numarası" value="{{ user_form.instance.landlord.business_phone }}" />
-                    <label for="inputBusinessPhone">Firma Telefon Numarası</label>
+                    <input class="form-control {% if landlord_form.business_phone.errors %}is-invalid{% endif %}" id="inputBusinessPhone" name="business_phone" type="text"
+                        placeholder="Business Phone Number" value="{{ landlord_form.instance.business_phone }}" />
+                    <label for="inputBusinessPhone">Business Phone Number</label>
+                    {% if landlord_form.business_phone.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in landlord_form.business_phone.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="form-floating mb-3">
-                    <input class="form-control" id="inputAddress" name="address" type="text" placeholder="Adres"
+                    <input class="form-control {% if user_form.landlord.address.errors %}is-invalid{% endif %}" id="inputAddress" name="address" type="text" placeholder="Address"
                         value="{{ user_form.instance.landlord.address }}" />
-                    <label for="inputAddress">Adres</label>
+                    <label for="inputAddress">Address</label>
+                    {% if user_form.landlord.address.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in user_form.landlord.address.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
-                <button type="submit" class="btn btn-primary">Güncelle</button>
-                <a class="btn btn-primary" href="{% url 'myadmin:myadmin_password_change' %}">Şifre Değiştir</a>
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a class="btn btn-primary" href="{% url 'myadmin:myadmin_password_change' %}">Change Password</a>
             </form>
         </div>
     </div>

@@ -11,12 +11,26 @@
     <title>Register - SB Admin</title>
     <link href="{% static 'myadmin/css/styles.css' %}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.875em;
+            margin-top: 0.25em;
+        }
+    </style>
 </head>
 <body class="bg-primary">
 <div id="layoutAuthentication">
     <div id="layoutAuthentication_content">
         <main>
             <div class="container">
+                {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
                 <div class="row justify-content-center">
                     <div class="col-lg-7">
                         <div class="card shadow-lg border-0 rounded-lg mt-5">
@@ -24,21 +38,51 @@
                             <div class="card-body">
                                 <form method="POST">
                                     {% csrf_token %}
+                                    {{ form.non_field_errors }}
                                     <div class="form-floating mb-3">
-                                        <input name="username" class="form-control" id="inputUsername" type="text" placeholder="Enter your username" required>
+                                        <input name="username" class="form-control" id="inputUsername" type="text" placeholder="Enter your username" value="{{ form.username.value|default_if_none:'' }}" required>
                                         <label for="inputUsername">Username</label>
+                                        {% if form.username.errors %}
+                                            <div class="error-message">
+                                                {{ form.username.errors.0 }}
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input name="email" class="form-control" id="inputEmail" type="email" placeholder="name@example.com" required>
+                                        <input name="email" class="form-control" id="inputEmail" type="email" placeholder="name@example.com" value="{{ form.email.value|default_if_none:'' }}" required>
                                         <label for="inputEmail">Email address</label>
+                                        {% if form.email.errors %}
+                                            <div class="error-message">
+                                                {{ form.email.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input name="phone_number" class="form-control" id="inputPhoneNumber" type="text" placeholder="Enter your phone number" value="{{ form.phone_number.value|default_if_none:'' }}">
+                                        <label for="inputPhoneNumber">Phone Number</label>
+                                        {% if form.phone_number.errors %}
+                                            <div class="error-message">
+                                                {{ form.phone_number.errors.0 }}
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input name="password1" class="form-control" id="inputPassword" type="password" placeholder="Create a password" required>
                                         <label for="inputPassword">Password</label>
+                                        {% if form.password1.errors %}
+                                            <div class="error-message">
+                                                {{ form.password1.errors.0 }}
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input name="password2" class="form-control" id="inputPasswordConfirm" type="password" placeholder="Confirm password" required>
                                         <label for="inputPasswordConfirm">Confirm Password</label>
+                                        {% if form.password2.errors %}
+                                            <div class="error-message">
+                                                {{ form.password2.errors.0 }}
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     <div class="mt-4 mb-0">
                                         <button class="btn btn-primary btn-block" type="submit">Create Account</button>

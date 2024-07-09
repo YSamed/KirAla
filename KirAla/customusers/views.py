@@ -4,6 +4,15 @@ from .models import Tenant
 # Create your views here.
 
 
+
+
+
+
+
+
+
+
+
 def tenant_list(request):
     tenants = Tenant.objects.all()
 

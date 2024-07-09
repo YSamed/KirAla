@@ -9,40 +9,59 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid px-4">
-    <h1 class="mt-4">{{ property.title }}</h1>
-    <div class="row">
-        <div class="col-md-8">
-            <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="{{ property.details.images.url }}" class="d-block w-100" alt="{{ property.title }}">
+<div class="container mt-4">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">{{ property.title }}</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for image in property.details.images.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ property.title }}">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                <div class="col-md-4">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Location:</strong> {{ property.location }}</li>
+                        <li class="list-group-item"><strong>Price:</strong> {{ property.price }}</li>
+                        <li class="list-group-item"><strong>Type:</strong> {{ property.property_type }}</li>
+                        <li class="list-group-item"><strong>Square Meters:</strong> {{ property.details.square_meters }}</li>
+                        <li class="list-group-item"><strong>Rooms:</strong> {{ property.details.room_count }}</li>
+                        <li class="list-group-item"><strong>Floor Count:</strong> {{ property.details.floor_count }}</li>
+                        <li class="list-group-item"><strong>Building Age:</strong> {{ property.details.building_age }}</li>
+                        <li class="list-group-item"><strong>Furnished:</strong> {{ property.details.furnished|yesno:"Yes,No" }}</li>
+                        <li class="list-group-item"><strong>Balcony:</strong> {{ property.details.balcony|yesno:"Yes,No" }}</li>
+                        <li class="list-group-item"><strong>Elevator:</strong> {{ property.details.elevator|yesno:"Yes,No" }}</li>
+                        <li class="list-group-item"><strong>Parking:</strong> {{ property.details.parking|yesno:"Yes,No" }}</li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <h3>Property Details</h3>
-            <p><strong>Location:</strong> {{ property.location }}</p>
-            <p><strong>Price:</strong> {{ property.price }}</p>
-            <p><strong>Type:</strong> {{ property.property_type }}</p>
-            <p><strong>Square Meters:</strong> {{ property.details.square_meters }}</p>
-            <p><strong>Rooms:</strong> {{ property.details.room_count }}</p>
-            <p><strong>Floor Count:</strong> {{ property.details.floor_count }}</p>
-            <p><strong>Building Age:</strong> {{ property.details.building_age }}</p>
-            <p><strong>Furnished:</strong> {{ property.details.furnished|yesno:"Yes,No" }}</p>
-            <p><strong>Balcony:</strong> {{ property.details.balcony|yesno:"Yes,No" }}</p>
-            <p><strong>Elevator:</strong> {{ property.details.elevator|yesno:"Yes,No" }}</p>
-            <p><strong>Parking:</strong> {{ property.details.parking|yesno:"Yes,No" }}</p>
-            
+        <div class="card-footer">
             {% if not property.is_deleted %}
             <a href="{% url 'properties:property_update_step1' pk=property.pk %}" class="btn btn-primary">Update Property</a>
             <form method="post" action="{% url 'properties:property_delete' pk=property.pk %}">
@@ -50,7 +69,7 @@
                 <button type="submit" class="btn btn-danger">Delete Property</button>
             </form>
             {% else %}
-            <p>This property has been deleted.</p>
+            <p class="text-muted">This property has been deleted.</p>
             {% endif %}
         </div>
     </div>

@@ -1,32 +1,148 @@
 {% extends 'myadmin/base.html' %}
 
+{% block breadcrumb %}
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'properties:property_list' %}">Property List</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'properties:property_detail' pk=property.pk %}">Property Detail</a></li>
+    <li class="breadcrumb-item active">{{ property.title }}</li>
+
+</ol>
+{% endblock %}
+
 {% block content %}
-  <h2>Mülkü Güncelle - Adım 2</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ details_form.as_p }}
 
-    <h2>Görseller</h2>
-    <input type="file" name="image" accept="image/*" multiple>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h2 style="color: white;">Update {{ property.title }}</h2>
+        </div>
+            <div class="container-fluid px-5 mt-4">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
 
-    <h2>Amenities</h2>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="id_furnished" name="furnished">
-        <label class="form-check-label" for="id_furnished">Furnished</label>
+                    <div class="mb-3">
+                        <label for="id_square_meters" class="form-label">Square Meters</label>
+                        <input type="text" class="form-control {% if details_form.square_meters.errors %}is-invalid{% elif details_form.square_meters.value %}is-valid{% endif %}" id="id_square_meters" name="square_meters" value="{{ details_form.instance.square_meters }}">
+                        {% for error in details_form.square_meters.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+
+                    <div class="mb-3">
+                        <label for="id_room_count" class="form-label">Room Count:</label>
+                        <select class="form-select {% if details_form.room_count.errors %}is-invalid{% elif details_form.room_count %}is-valid{% endif %}" id="id_room_count" name="room_count">
+                            {% for choice in details_form.room_count.field.choices %}
+                            <option value="{{ choice.0 }}" {% if choice.0 == details_form.instance.room_count %}selected{% endif %}>{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for error in details_form.room_count.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+
+
+                    <div class="mb-3">
+                        <label for="id_floor_count" class="form-label">Floor Count:</label>
+                        <select class="form-select {% if details_form.floor_count.errors %}is-invalid{% elif details_form.instance.floor_count %}is-valid{% endif %}" id="id_floor_count" name="floor_count">
+                            {% for choice in details_form.floor_count.field.choices %}
+                            <option value="{{ choice.0 }}" {% if choice.0 == details_form.instance.floor_count %}selected{% endif %}>{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for error in details_form.floor_count.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+
+                    <div class="mb-3">
+                        <label for="id_building_age" class="form-label">Building Age:</label>
+                        <select class="form-select {% if details_form.building_age.errors %}is-invalid{% elif details_form.instance.building_age %}is-valid{% endif %}" id="id_building_age" name="building_age">
+                            {% for choice in details_form.building_age.field.choices %}
+                            <option value="{{ choice.0 }}" {% if choice.0 == details_form.instance.building_age %}selected{% endif %}>{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for error in details_form.building_age.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+
+
+
+
+                    <div class="mb-3">
+                        <label for="id_number_floors" class="form-label">Number of Floors</label>
+                        <input type="text" class="form-control {% if details_form.number_floors.errors %}is-invalid{% elif details_form.number_floors.value %}is-valid{% endif %}" id="id_number_floors" name="number_floors" value="{{ details_form.instance.number_floors }}">
+                        {% for error in details_form.number_floors.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+
+
+
+
+
+                    <div class="mb-3">
+                        <label for="id_furnished" class="form-check-label">Furnished</label>
+                        {{ details_form.furnished }}
+                        {% if details_form.furnished.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in details_form.furnished.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_balcony" class="form-check-label">Balcony</label>
+                        {{ details_form.balcony }}
+                        {% if details_form.balcony.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in details_form.balcony.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_elevator" class="form-check-label">Elevator</label>
+                        {{ details_form.elevator }}
+                        {% if details_form.elevator.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in details_form.elevator.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_parking" class="form-check-label">Parking</label>
+                        {{ details_form.parking }}
+                        {% if details_form.parking.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in details_form.parking.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ formset.management_form }}
+                        {% for form in formset %}
+                        <div class="form-row">
+                            {{ form.as_p }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <button type="submit" name="submit" class="btn btn-primary">Update Property Details</button>
+                </form>
+            </div>
     </div>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="id_balcony" name="balcony">
-        <label class="form-check-label" for="id_balcony">Balcony</label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="id_elevator" name="elevator">
-        <label class="form-check-label" for="id_elevator">Elevator</label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="id_parking" name="parking">
-        <label class="form-check-label" for="id_parking">Parking</label>
-    </div>
-    
-    <button type="submit" name="submit" class="btn btn-primary">Güncelle</button>
-  </form>
+</div>
 {% endblock %}
