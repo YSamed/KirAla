@@ -1,66 +1,85 @@
 from django import forms
-from .models import Property, PropertyDetails, PropertyImage ,Building
+from .models import Building , Apartment
 
+
+from django import forms
+from .models import Building
 
 class BuildingForm(forms.ModelForm):
+    FLOOR_CHOICES = [(i, str(i)) for i in range(1, 51)]
+    floors = forms.ChoiceField(choices=FLOOR_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    
+    BUILDING_AGE_CHOICES = [(i, str(i)) for i in range(1, 51)]
+    building_age = forms.ChoiceField(choices=BUILDING_AGE_CHOICES, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
+    
     class Meta:
         model = Building
-        fields = ['name', 'address', 'building_type', 'number_floors', 'building_age']
+        fields = ['name', 'address', 'building_type', 'floors', 'building_age']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Address'}),
             'building_type': forms.Select(attrs={'class': 'form-control'}),
-            'number_floors': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Number of Floors'}),
+            'floors': forms.Select(attrs={'class': 'form-control'}),
             'building_age': forms.Select(attrs={'class': 'form-control'}),
         }
 
-class PropertyForm(forms.ModelForm):
+
+    def clean_floors(self):
+        floors = self.cleaned_data.get('floors')
+        if floors is not None and int(floors) < 0:
+            raise forms.ValidationError("Please enter a positive number.")
+        return floors
+
+    def clean_building_age(self):
+        building_age = self.cleaned_data.get('building_age')
+        if building_age is not None and int(building_age) < 0:
+            raise forms.ValidationError("Please enter a positive number.")
+        return building_age
+
+
+
+
+from django import forms
+from .models import Apartment
+
+class ApartmentForm(forms.ModelForm):
+    image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': False}), required=False)
+
     class Meta:
-        model = Property
-        fields = ['title', 'description', 'price' ,'building']
+        model = Apartment
+        fields = ['building', 'number', 'floor', 'rooms', 'area', 'is_rented', 'furnished', 'balcony', 'elevator', 'parking', 'image']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Price'}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        self.building_id = kwargs.pop('building_id', None)  # Bina ID'sini alıyoruz
-        super().__init__(*args, **kwargs)
-        
-        # Otomatik olarak bağlı olduğu apartmanı belirlemek için bina ID'sini kullanıyoruz
-        if self.building_id:
-            self.fields['building'].queryset = Building.objects.filter(id=self.building_id, is_deleted=False)
-            self.fields['building'].initial = Building.objects.get(id=self.building_id)
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        if self.building_id:
-            instance.building_id = self.building_id  # Mülkün bina ID'sini belirliyoruz
-        if commit:
-            instance.save()
-        return instance
-
-
-class PropertyDetailsForm(forms.ModelForm):
-    class Meta:
-        model = PropertyDetails
-        fields = ['square_meters', 'room_count', 'floor_count', 'furnished', 'balcony', 'elevator', 'parking']
-        widgets = {
-            'square_meters': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Square Meters'}),
-            'room_count': forms.Select(attrs={'class': 'form-control'}),
-            'floor_count': forms.Select(attrs={'class': 'form-control'}),
+            'building': forms.Select(attrs={'class': 'form-control'}),
+            'number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apartment Number'}),
+            'floor': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Floor'}),
+            'rooms': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Number of Rooms'}),
+            'area': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Area'}),
+            'is_rented': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'furnished': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'balcony': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'elevator': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'parking': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'image': forms.ClearableFileInput(attrs={'multiple': False}),
+        }
+        labels = {
+            'number': 'Apartment Number',
+            'rooms': 'Number of Rooms',
+            'is_rented': 'Is Rented',
+            'furnished': 'Furnished',
+            'balcony': 'Balcony',
+            'elevator': 'Elevator',
+            'parking': 'Parking',
+            'image': 'Apartment Image',
         }
 
+    def clean_floor(self):
+        floor = self.cleaned_data.get('floor')
+        if floor is None or floor <= 0:
+            raise forms.ValidationError("Floor must be greater than zero.")
+        return floor
 
-class PropertyImageForm(forms.ModelForm):
-    class Meta:
-        model = PropertyImage
-        fields = ['image']
-        widgets = {
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
-        }
+    def clean_area(self):
+        area = self.cleaned_data.get('area')
+        if area is None or area <= 0:
+            raise forms.ValidationError("Area must be greater than zero.")
+        return area

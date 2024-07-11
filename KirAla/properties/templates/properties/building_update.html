@@ -4,7 +4,7 @@
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="{% url 'properties:building-list' %}">Building List</a></li>
-    <li class="breadcrumb-item active">Add Building </li>
+    <li class="breadcrumb-item active">Update Building</li>
 </ol>
 {% endblock %}
 
@@ -12,7 +12,7 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-header bg-primary">
-            <h2 style="color: white;">Add Building</h2>
+            <h2 style="color: white;">Update Building</h2>
         </div>
         <div class="container-fluid px-5 mt-4">
             <form method="post">
@@ -57,7 +57,7 @@
                     {% endfor %}
                 </div>
             
-                <button type="submit" class="btn btn-primary">Create Building</button>
+                <button type="submit" class="btn btn-primary">Update Building</button>
             </form>
         </div>
     </div>

@@ -27,31 +27,31 @@
             <tr>
                 <th>Title</th>
                 <th>Address</th>
-                <th>Building Age</th>
                 <th>Building Type</th>
-                <th>Number of Floors</th>
+                <th>Building Age</th>
+                <th>Floors</th>
                 <th>Apartment for Rent</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            {% for building in all_buildings %}
+            {% for building in buildings %}
             <tr>
                 <td>{{ building.name }}</td>
                 <td>{{ building.address }}</td>
-                <td>{{ building.building_age }}</td>
                 <td>{{ building.building_type }}</td>
-                <td>{{ building.number_floors }}</td>
+                <td>{{ building.building_age }}</td>
+                <td>{{ building.floors }}</td>
                 <td>{{ building.rental_apartment_count }}</td>   
                 <td>
-                    <a href="{% url 'properties:building_detail' building.pk %}" class="btn btn-info btn-sm">Detail</a>
+                    <a href="{% url 'properties:building-detail' building.pk %}" class="btn btn-info btn-sm">Detail</a>
                 </td>               
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <div class="mt-5">
-        <a href="{% url 'properties:building_create' %}" class="btn btn-success">Add New Building</a>
+        <a href="{% url 'properties:building-create' %}" class="btn btn-success">Add New Building</a>
     </div>
 </div>
 </div>

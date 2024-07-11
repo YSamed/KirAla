@@ -1,5 +1,3 @@
-<!-- myadmin/base.html -->
-
 {% load static %}
 
 <!DOCTYPE html>
@@ -60,10 +58,10 @@
                         </a>
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href=" {% url 'properties:building_list' %}">Building List</a>
-                                <a class="nav-link" href=" {% url 'properties:building_create' %}"> Building Created</a>
+                                <a class="nav-link" href="{% url 'properties:building-list' %}">Building List</a>
+                                <a class="nav-link" href="{% url 'properties:building-create' %}"> Building Created</a>
 
-                                <a class="nav-link" href="{% url 'properties:property_list' %}">Properties List</a>
+                                <a class="nav-link" href="{% url 'properties:building-create' %}">Properties List</a>
                             
 
                                
