@@ -1,0 +1,59 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-5 ">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active">Building List</li>
+
+</ol>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid px-3">
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+<h1 class="mt-5">Building List</h1>
+<div class="card-body">
+    <table id="datatablesSimple" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Address</th>
+                <th>Building Age</th>
+                <th>Building Type</th>
+                <th>Number of Floors</th>
+                <th>Apartment for Rent</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for building in all_buildings %}
+            <tr>
+                <td>{{ building.name }}</td>
+                <td>{{ building.address }}</td>
+                <td>{{ building.building_age }}</td>
+                <td>{{ building.building_type }}</td>
+                <td>{{ building.number_floors }}</td>
+                <td>{{ building.rental_apartment_count }}</td>   
+                <td>
+                    <a href="{% url 'properties:building_detail' building.pk %}" class="btn btn-info btn-sm">Detail</a>
+                </td>               
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="mt-5">
+        <a href="{% url 'properties:building_create' %}" class="btn btn-success">Add New Building</a>
+    </div>
+</div>
+</div>
+
+{% endblock %}

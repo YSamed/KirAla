@@ -3,10 +3,14 @@
 {% block breadcrumb %}
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'properties:property_list' %}">Property List</a></li>
-    <li class="breadcrumb-item active">Property Detail</li>
+    <li class="breadcrumb-item"><a href="{% url 'properties:building_list' %}">Building List</a></li>
+    {% if building %}
+    <li class="breadcrumb-item"><a href="{% url 'properties:building_detail' building.pk %}">{{ building.name }}</a></li>
+    {% endif %}
+    <li class="breadcrumb-item">{{ property.title }}</li>
 </ol>
 {% endblock %}
+
 
 {% block content %}
 <div class="container mt-4">
@@ -47,7 +51,7 @@
                 <div class="col-md-4">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item"><strong>Location:</strong> {{ property.location }}</li>
-                        <li class="list-group-item"><strong>Price:</strong> {{ property.price }}</li>
+                        <li class="list-group-item"><strong>Price:</strong> {{ property.price }} ₺</li>
                         <li class="list-group-item"><strong>Type:</strong> {{ property.property_type }}</li>
                         <li class="list-group-item"><strong>Square Meters:</strong> {{ property.details.square_meters }}</li>
                         <li class="list-group-item"><strong>Rooms:</strong> {{ property.details.room_count }}</li>

@@ -1,0 +1,75 @@
+{% extends 'myadmin/base.html' %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'properties:building_list' %}">Building List</a></li>
+    <li class="breadcrumb-item active">Add Building </li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h2 style="color: white;">Add Building</h2>
+        </div>
+        <div class="container-fluid px-5 mt-4">
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_name" class="form-label">Name</label>
+                <input type="text" class="form-control {% if form.name.errors %}is-invalid{% elif form.name.value %}is-valid{% endif %}" id="id_name" name="name" value="{{ form.instance.name }}">
+                {% for error in form.name.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+        
+            <div class="mb-3">
+                <label for="id_address" class="form-label">Address</label>
+                <input type="text" class="form-control {% if form.address.errors %}is-invalid{% elif form.address.value %}is-valid{% endif %}" id="id_address" name="address" value="{{ form.instance.address }}">
+                {% for error in form.address.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+        
+            <div class="mb-3">
+                <label for="id_building_type" class="form-label">Building Type</label>
+                <select class="form-select {% if form.building_type.errors %}is-invalid{% endif %}" id="id_building_type" name="building_type">
+                    {% for key, value in form.building_type.field.choices %}
+                        <option value="{{ key }}" {% if form.building_type.value == key %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+                {% for error in form.building_type.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+        
+            <div class="mb-3">
+                <label for="id_number_floors" class="form-label">Number of Floors</label>
+                <input type="number" class="form-control {% if form.number_floors.errors %}is-invalid{% elif form.number_floors.value %}is-valid{% endif %}" id="id_number_floors" name="number_floors" value="{{ form.instance.number_floors }}">
+                {% for error in form.number_floors.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+        
+            <div class="mb-3">
+                <label for="id_building_age" class="form-label">Building Age</label>
+                <select class="form-select {% if form.building_age.errors %}is-invalid{% endif %}" id="id_building_age" name="building_age">
+                    {% for key, value in form.building_age.field.choices %}
+                        <option value="{{ key }}" {% if form.building_age.value == key %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+                {% for error in form.building_age.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+        
+            <button type="submit" class="btn btn-primary">Create Building</button>
+        </form>
+        
+        </div>
+    </div>
+</div>
+{% endblock %}
+

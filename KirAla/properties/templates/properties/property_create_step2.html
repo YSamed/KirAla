@@ -53,18 +53,6 @@
                     {% endfor %}
                 </div>
 
-                <!-- Building Age -->
-                <div class="mb-3">
-                    <label for="id_building_age" class="form-label">Building Age:</label>
-                    <select class="form-select {% if details_form.building_age.errors %}is-invalid{% endif %}" id="id_building_age" name="building_age">
-                        {% for choice in details_form.building_age.field.choices %}
-                            <option value="{{ choice.0 }}" {% if choice.0 == details_form.instance.building_age %}selected{% endif %}>{{ choice.1 }}</option>
-                        {% endfor %}
-                    </select>
-                    {% for error in details_form.building_age.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
-                    {% endfor %}
-                </div>
 
                 <!-- Number of Floors -->
                 <div class="mb-3">

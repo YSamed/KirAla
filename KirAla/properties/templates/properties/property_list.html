@@ -2,62 +2,49 @@
 {% load static %}
 
 {% block breadcrumb %}
-<ol class="breadcrumb mb-5 ">
+<ol class="breadcrumb mb-5">
     <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
     <li class="breadcrumb-item active">Property List</li>
-
 </ol>
 {% endblock %}
 
 {% block content %}
-
-    <div class="container-fluid px-3">
-        {% if messages %}
-        {% for message in messages %}
-            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
+<div class="container-fluid px-3">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
     {% endif %}
-        <h1 class="mt-5">Properties List </h1>
-
-        <div class="card-body">
-            <table id="datatablesSimple" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Location</th>
-                        <th>Type</th>
-                        <th>Rented</th>
-                        <th>Price</th>
-                        <th>Tenant</th>
-                        <th>Detail</th>
-                    </tr>
-                </thead>
-                <tfoot>
-
-                </tfoot>
-                <tbody>
-                    {% for property in all_properties %}
-                    <tr>
-                        <td>{{ property.title }}</td>
-                        <td>{{ property.location }}</td>
-                        <td>{{ property.property_type }}</td>
-                        <td>{{ property.is_rented  }}</td>
-                        <td>{{ property.price }}</td>
-                        <td>{{ property.tenant}}</td>
-                        <td>
-                            <a href="{% url 'properties:property_detail' property.pk %}" class="btn btn-primary btn-sm">View Details</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <h1 class="mt-5">Properties List</h1>
+    <div class="card-body">
+        <table id="datatablesSimple" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Tenant</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for property in all_properties %}
+                <tr>
+                    <td>{{ property.title }}</td>
+                    <td>{{ property.price }}</td>
+                    <td>{{ property.tenant }}</td>
+                    <td>
+                        <a href="{% url 'properties:property_detail' property.pk %}" class="btn btn-primary btn-sm">View Details</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="mt-5">
+            <a href="" class="btn btn-success">Add New Property</a>
         </div>
-    <div class="mt-5">
-        <a href="{% url 'properties:property_create_step1' %}" class="btn btn-success">Add New Property</a>
     </div>
-    </div>
-
+</div>
 {% endblock %}

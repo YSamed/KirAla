@@ -2,49 +2,52 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.contrib import messages
-from .models import Property, PropertyImage ,PropertyDetails
-from .forms import PropertyForm, PropertyDetailsForm, PropertyImageForm
+from .models import Property, PropertyImage ,PropertyDetails ,Building
+from .forms import PropertyForm, PropertyDetailsForm, PropertyImageForm ,BuildingForm
+from django.db.models import Sum
+
 
 
 @login_required
 def property_list(request):
     user = request.user
     all_properties = Property.objects.filter(owner=user, is_deleted=False)
-    rented_properties = Property.objects.filter(owner=user, is_rented=True, is_deleted=False)
-    vacant_properties = Property.objects.filter(owner=user, is_rented=False, is_deleted=False)
+    vacant_properties = Property.objects.filter(owner=user, is_deleted=False)
 
     context = {
         'all_properties': all_properties,
-        'rented_properties': rented_properties,
         'vacant_properties': vacant_properties,
     }
 
     return render(request, 'properties/property_list.html', context)
 
-
 @login_required
 def property_detail(request, pk):
-    property = get_object_or_404(Property, pk=pk)
-    return render(request, 'properties/property_detail.html', {'property': property})
-
+    property_instance = get_object_or_404(Property, pk=pk)
+    building = property_instance.building  # İlişkili building nesnesini property üzerinden alıyoruz
+    
+    return render(request, 'properties/property_detail.html', {'property': property_instance, 'building': building})
 
 #YENİ EKLEME
 @login_required
-def property_create_step1(request):
+def property_create_step1(request, building_id):
+    building = get_object_or_404(Building, id=building_id)  # Bina ID'sini alıyoruz
+    
     if request.method == 'POST':
-        form = PropertyForm(request.POST)
+        form = PropertyForm(request.POST, building_id=building_id)
         if form.is_valid():
             property_instance = form.save(commit=False)
-            property_instance.owner = request.user  
+            property_instance.owner = request.user
             property_instance.save()
 
-            request.session['new_property'] = property_instance.id  
-            return redirect('properties:property_create_step2') 
+            request.session['new_property'] = property_instance.id
+            return redirect('properties:property_create_step2')
     else:
-        form = PropertyForm()
+        form = PropertyForm(building_id=building_id)
 
     context = {
         'form': form,
+        'building': building,
     }
     return render(request, 'properties/property_create_step1.html', context)
 
@@ -99,13 +102,14 @@ def property_create_step2(request):
 @login_required
 def property_delete(request, pk):
     property = get_object_or_404(Property, pk=pk)
+
     
     if request.method == 'POST':
         property.soft_delete()
         messages.error(request, 'Property has been deleted successfully!')
         return redirect('properties:property_list')
     
-    return render(request, 'properties/property_confirm_delete.html', {'property': property})
+    return render(request, 'properties/property_confirm_delete.html', {'property': property })
 
 
 #GÜNCELLEME
@@ -160,3 +164,77 @@ def property_update_step2(request, pk):
         'property': property,
     }
     return render(request, 'properties/property_update_step2.html', context)
+
+
+
+
+
+
+
+@login_required
+def building_update(request, pk):
+    building = get_object_or_404(Building, pk=pk)
+    if request.method == 'POST':
+        form = BuildingForm(request.POST, instance=building)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Building information has been updated successfully!')
+            return redirect('some_url') 
+        else:
+            messages.error(request, 'Form submission failed. Please correct the errors.')
+    else:
+        form = BuildingForm(instance=building)
+    
+    context = {
+        'form': form,
+        'building': building,
+    }
+    return render(request, 'building_update.html', context)
+
+
+
+@login_required
+def building_list(request):
+    all_buildings = Building.objects.all()
+
+    for building in all_buildings:
+        building.rental_apartment_count = Property.objects.filter(building=building, tenant__isnull=False).count()
+
+    context = {
+        'all_buildings': all_buildings,
+    }
+
+    return render(request, 'properties/building_list.html', context)
+
+
+
+@login_required
+def building_create(request):
+    if request.method == 'POST':
+        form = BuildingForm(request.POST)
+        if form.is_valid():
+            building_instance = form.save()
+            messages.success(request, 'Building has been created successfully!')
+            return redirect('properties:property_create_step1')
+        else:
+            messages.error(request, 'Form submission failed. Please correct the errors.')
+    else:
+        form = BuildingForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'properties/building_create.html', context)
+
+@login_required
+def building_detail(request, pk):
+    building = get_object_or_404(Building, pk=pk, is_deleted=False)
+    properties = Property.objects.filter(building=building, is_deleted=False, tenant=True)
+    total_income = properties.aggregate(total_income=Sum('price'))['total_income'] or 0
+    
+    context = {
+        'building': building,
+        'properties': properties,
+        'total_income': total_income,
+    }
+    return render(request, 'properties/building_detail.html', context)
