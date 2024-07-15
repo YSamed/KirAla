@@ -1,0 +1,82 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-5">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active">Contract List </li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-3">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h1 class="mt-5">Contract List</h1>
+    <div class="card-body">
+        <table id="datatablesSimple" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Apartment</th>
+                    <th>Tenant</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Days Remaining</th>
+                    <th>Rent Amount</th>
+                    <th>Active</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contract in contracts %}
+                <tr>
+                    <td>{{ contract.apartment }}</td>
+                    <td>{{ contract.tenant }}</td>
+                    <td>{{ contract.start_date }}</td>
+                    <td>{{ contract.end_date }}</td>
+                    <td>
+                        {% if contract.end_date %}
+                            {% with days_remaining=contract.end_date|timeuntil %}
+                                {{ days_remaining }}
+                            {% endwith %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ contract.rent_amount }}</td>
+                    <td>{{ contract.is_active }}</td>
+                    <td>
+                        <a href="{% url 'contract:contract-detail' contract.pk %}" class="btn btn-info btn-sm">Detail</a>
+                        <a href="{% url 'contract:contract-update' contract.pk %}" class="btn btn-primary btn-sm">Update</a>
+                        
+                        {% if not contract.is_deleted %}
+                            <form method="post" action="{% url 'contract:contract-detail' contract.pk %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="soft_delete" value="true">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            
+
+                <tr>
+                    <td colspan="8" class="text-center">No contract history available.</td>
+                </tr>
+        
+            </tbody>
+        </table>
+        <div class="mt-5">
+            <a href="{% url 'contract:contract-create' %}" class="btn btn-success">Create Contract</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

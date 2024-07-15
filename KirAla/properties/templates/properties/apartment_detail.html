@@ -1,0 +1,63 @@
+{% extends 'myadmin/base.html' %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'properties:building-list' %}">Building List</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'properties:building-detail' pk=apartment.building.pk %}">{{ apartment.building.name }}</a></li>
+    <li class="breadcrumb-item active">Apartment No: {{ apartment.number }}</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <div class="card">
+        <div class="card-header">
+            <h2 style="color: black;">Apartment Details</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-7">
+                    <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <img src="{{ apartment.image.url }}" alt="Apartment Image" style="height: 500px; width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 px-3">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Number:</strong> {{ apartment.number }}</li>
+                        <li class="list-group-item"><strong>Floor:</strong> {{ apartment.floor }}</li>
+                        <li class="list-group-item"><strong>Rooms:</strong> {{ apartment.rooms }}</li>
+                        <li class="list-group-item"><strong>Area:</strong> {{ apartment.area }} sqm</li>
+                        <li class="list-group-item"><strong>Is Rented:</strong> {{ apartment.is_rented|yesno:"Yes,No" }}</li>
+                        <li class="list-group-item"><strong>Furnished:</strong> {{ apartment.furnished|yesno:"Yes,No" }}</li>
+                        <li class="list-group-item"><strong>Balcony:</strong> {{ apartment.balcony|yesno:"Yes,No" }}</li>
+                        <li class="list-group-item"><strong>Elevator:</strong> {{ apartment.elevator|yesno:"Yes,No" }}</li>
+                        <li class="list-group-item"><strong>Parking:</strong> {{ apartment.parking|yesno:"Yes,No" }}</li>
+                    </ul>                
+                    {% if not apartment.is_deleted %}
+                        <a href="{% url 'properties:apartment-update' pk=apartment.pk %}" class="btn btn-primary mt-3">Update Apartment</a>
+                        <form method="post" action="{% url 'properties:apartment-detail' pk=apartment.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" name="delete_apartment" class="btn btn-danger mt-3">Delete Apartment</button>
+                        </form>
+                    {% else %}
+                        <p class="text-muted mt-3">This apartment has been deleted.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

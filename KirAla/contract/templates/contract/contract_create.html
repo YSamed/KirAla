@@ -1,0 +1,76 @@
+{% extends 'myadmin/base.html' %}
+
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-5">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'contract:contract-list' %}">Contract List</a></li>
+    <li class="breadcrumb-item active">Contract Add </li>
+</ol>
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h2 style="color: white;">Create Contract</h2>
+        </div>
+        <div class="container-fluid px-5 mt-4">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="id_apartment" class="form-label">Apartment:</label>
+                    {{ form.apartment }}
+                    {% for error in form.apartment.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_tenant" class="form-label">Tenant:</label>
+                    {{ form.tenant }}
+                    {% for error in form.tenant.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_start_date" class="form-label">Start Date:</label>
+                    {{ form.start_date }}
+                    {% for error in form.start_date.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_end_date" class="form-label">End Date:</label>
+                    {{ form.end_date }}
+                    {% for error in form.end_date.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_rent_amount" class="form-label">Rent Amount:</label>
+                    {{ form.rent_amount }}
+                    {% for error in form.rent_amount.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <label for="id_is_active" class="form-check-label">Is Active:</label>
+                    {{ form.is_active }}
+                    {% for error in form.is_active.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Create Contract</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,9 +1,12 @@
 from django.db import models
+from customusers.models import Landlord 
 
 
 class Building(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
+    landlord = models.ForeignKey(Landlord, on_delete=models.CASCADE, related_name='buildings')
+
     
     BUILDING_TYPES = [
         ('apart', 'Apart'),

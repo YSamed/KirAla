@@ -1,10 +1,7 @@
 from django import forms
 from .models import Building , Apartment
 
-
-from django import forms
-from .models import Building
-
+# Building Form
 class BuildingForm(forms.ModelForm):
     FLOOR_CHOICES = [(i, str(i)) for i in range(1, 51)]
     floors = forms.ChoiceField(choices=FLOOR_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
@@ -37,19 +34,14 @@ class BuildingForm(forms.ModelForm):
         return building_age
 
 
-
-
-from django import forms
-from .models import Apartment
-
+# Apartment Form
 class ApartmentForm(forms.ModelForm):
     image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': False}), required=False)
 
     class Meta:
         model = Apartment
-        fields = ['building', 'number', 'floor', 'rooms', 'area', 'is_rented', 'furnished', 'balcony', 'elevator', 'parking', 'image']
+        fields = ['number', 'floor', 'rooms', 'area', 'is_rented', 'furnished', 'balcony', 'elevator', 'parking', 'image']
         widgets = {
-            'building': forms.Select(attrs={'class': 'form-control'}),
             'number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apartment Number'}),
             'floor': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Floor'}),
             'rooms': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Number of Rooms'}),
@@ -61,6 +53,7 @@ class ApartmentForm(forms.ModelForm):
             'parking': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'image': forms.ClearableFileInput(attrs={'multiple': False}),
         }
+
         labels = {
             'number': 'Apartment Number',
             'rooms': 'Number of Rooms',
@@ -83,3 +76,7 @@ class ApartmentForm(forms.ModelForm):
         if area is None or area <= 0:
             raise forms.ValidationError("Area must be greater than zero.")
         return area
+    
+    @property
+    def is_rented(self):
+        return self.contracts.filter(is_active=True).exists()

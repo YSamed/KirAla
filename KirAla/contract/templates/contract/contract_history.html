@@ -1,0 +1,48 @@
+{% extends 'myadmin/base.html' %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-5">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'contract:contract-list' %}">Contract List</a></li>
+    <li class="breadcrumb-item active">Contract History</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-5">Contract History</h1>
+
+
+
+
+
+        <div class="card-body">
+            <p class="text-muted">Today's Date: {{ today }}</p>
+    
+
+            <table id="datatablesSimple" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Apartment</th>
+                        <th>Tenant</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Rent Amount</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contract in contracts %}
+                    <tr>
+                        <td>{{ contract.apartment }}</td>
+                        <td>{{ contract.tenant.user.get_full_name }}</td>
+                        <td>{{ contract.start_date }}</td>
+                        <td>{{ contract.end_date }}</td>
+                        <td>{{ contract.rent_amount }} ₺</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+{% endblock %}

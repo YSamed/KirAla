@@ -1,0 +1,109 @@
+{% extends 'myadmin/base.html' %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'properties:building-list' %}">Building List</a></li>
+    <li class="breadcrumb-item">{{ building.name }}</li>
+    <li class="breadcrumb-item active">Add Apartment</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h2 style="color: white;">Add Apartment</h2>
+        </div>
+        <div class="container-fluid px-5 mt-4">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <input type="hidden" name="building" value="{{ building.pk }}">
+
+                <div class="mb-3">
+                    <label for="id_number" class="form-label">Apartment Number:</label>
+                    {{ form.number }}
+                    {% for error in form.number.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_floor" class="form-label">Floor:</label>
+                    {{ form.floor }}
+                    {% for error in form.floor.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_rooms" class="form-label">Number of Rooms:</label>
+                    {{ form.rooms }}
+                    {% for error in form.rooms.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_area" class="form-label">Area:</label>
+                    {{ form.area }}
+                    {% for error in form.area.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_is_rented" class="form-label">Is Rented:</label>
+                    {{ form.is_rented }}
+                    {% for error in form.is_rented.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_furnished" class="form-label">Furnished:</label>
+                    {{ form.furnished }}
+                    {% for error in form.furnished.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_balcony" class="form-label">Balcony:</label>
+                    {{ form.balcony }}
+                    {% for error in form.balcony.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_elevator" class="form-label">Elevator:</label>
+                    {{ form.elevator }}
+                    {% for error in form.elevator.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_parking" class="form-label">Parking:</label>
+                    {{ form.parking }}
+                    {% for error in form.parking.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_image" class="form-label">Apartment Image:</label>
+                    {{ form.image }}
+                    {% for error in form.image.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create Apartment</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

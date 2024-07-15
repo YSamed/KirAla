@@ -6,7 +6,6 @@
     <li class="breadcrumb-item"><a href="{% url 'properties:building-list' %}">Building List</a></li>
     <li class="breadcrumb-item">{{ building.name }} </li>
 </ol>
-
 {% endblock %}
 
 
@@ -14,7 +13,6 @@
 {% block content %}
 
 <div class="row mt-3">
-
     <div class="container-fluid px-3">
         {% if messages %}
         {% for message in messages %}
@@ -23,120 +21,139 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
-    {% endif %}
-    <h1>{{ building.name }}</h1>
-    <div class="col-xl-4 col-md-6">
-        <div class="card bg-success text-white mb-4">
-            <div class="card-body"> Wallet</div>
-            <div class="card-footer d-flex align-items-center justify-content-between">
-                <div class="small text-white"><i class=""></i>
-                <h4>{{ total_income }} ₺</h4></div>
+        {% endif %}
+        <h1>{{ building.name }}</h1>
+ 
+
+    <div class="row mt-2">
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">Address</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <div class="small text-white">
+                        <h4>{{ building.address }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">Building Type</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <div class="small text-white">
+                        <h4>{{ building.building_type }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">Building Age</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <div class="small text-white">
+                        <h4>{{ building.building_age }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">Building Floors</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <div class="small text-white">
+                        <h4>{{ building.floors }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">Rental Apartments</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <div class="small text-white">
+                        <h4>{{ building.rental_apartment_count }}</h4>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row mt-2">
-    <div class="col-xl-3 col-md-6">
-        <div class="card bg-primary text-white mb-4">
-            <div class="card-body">Addres</div>
-            <div class="card-footer d-flex align-items-center justify-content-between">
-                <div class="small text-white"><i class=""></i>
-                <h4>{{ building.address }}</h4></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-3 col-md-6">
-        <div class="card bg-primary text-white mb-4">
-            <div class="card-body">Building Type</div>
-            <div class="card-footer d-flex align-items-center justify-content-between">
-                <div class="small text-white"><i class=""></i>
-                <h4>{{ building.building_type }}</h4></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-2 col-md-6">
-        <div class="card bg-primary text-white mb-4">
-            <div class="card-body"> Building Age</div>
-            <div class="card-footer d-flex align-items-center justify-content-between">
-                <div class="small text-white"><i class=""></i>
-                <h4>{{ building.building_age }}</h4></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-2 col-md-6">
-        <div class="card bg-primary text-white mb-4">
-            <div class="card-body">Building Floors</div>
-            <div class="card-footer d-flex align-items-center justify-content-between">
-                <div class="small text-white"><i class=""></i>
-                <h4>{{ building.floors }}</h4></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-2 col-md-6">
-        <div class="card bg-primary text-white mb-4">
-            <div class="card-body"> Rental Apartment</div>
-            <div class="card-footer d-flex align-items-center justify-content-between">
-                <div class="small text-white"><i class=""></i>
-                <h4>{{ building.rental_apartment_count }}</h4></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-    <div class="card-body mt-4">
+    <div class="card-body mt-4 px-3">
         <table id="datatablesSimple" class="table table-striped">
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Price</th>
-                    <th>Tenant</th>
-                    <th>Detail</th>
+                    <th>Apartment Number</th>
+                    <th>Floor</th>
+                    <th>Rooms</th>
+                    <th>Area</th>
+                    <th>Rented</th>
+                    <th>Furnished</th>
+                    <th>Balcony</th>
+                    <th>Elevator</th>
+                    <th>Parking</th>
+                    <th>Image</th>
+                    <th>Details</th>
                 </tr>
             </thead>
-            <tfoot>
-            </tfoot>
             <tbody>
-                {% for apartment in building.apartment.all %}
+                {% for apartment in building.apartments.all %}
+                {% if not apartment.is_deleted %}
                 <tr>
-                    <td>{{ apartment.title }}</td>
-                    <td>{{ property.price }} ₺</td>
-                    <td>{{ property.tenant }}</td>
+                    <td>{{ apartment.number }}</td>
+                    <td>{{ apartment.floor }}</td>
+                    <td>{{ apartment.rooms }}</td>
+                    <td>{{ apartment.area }}</td>
+                    <td>{{ apartment.is_rented|yesno:"Yes,No" }}</td>
+                    <td>{{ apartment.furnished|yesno:"Yes,No" }}</td>
+                    <td>{{ apartment.balcony|yesno:"Yes,No" }}</td>
+                    <td>{{ apartment.elevator|yesno:"Yes,No" }}</td>
+                    <td>{{ apartment.parking|yesno:"Yes,No" }}</td>
+                    <td><img src="{{ apartment.image.url }}" alt="Apartment Image" style="max-height: 100px;"></td>
                     <td>
-                        <a href="{% url 'properties:property_detail' property.pk %}" class="btn btn-primary btn-sm">View Details</a>
+                        <a href="{% url 'properties:apartment-detail' apartment.pk %}" class="btn btn-primary btn-sm">View Details</a>
+                        <div class="mt-2">
+                            <form method="post" action="{% url 'properties:building-detail' building.pk %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="delete_apartment" value="{{ apartment.pk }}">
+                                <a href="{% url 'properties:apartment-update' apartment.pk %}" class="btn btn-success btn-sm">Update</a>
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
+                {% endif %}
                 {% empty %}
                 <tr>
-                    <td colspan="4">No properties found.</td>
+                    <td colspan="11">No apartments found.</td>
                 </tr>
                 {% endfor %}
             </tbody>
+            
+            
+            
         </table>
 
-        <div class="mt-5">
-            <a href="" class="btn btn-success">Add New Property</a>
-            <a href="{% url 'properties:building-update' building.pk  %}" class="btn btn-success">Update</a>
+        <div class="mt-5 px-3">
+            <a href="{% url 'properties:apartment-create' building.pk %}" class="btn btn-success">Add New Apartment</a>
         </div>
-    <!-- Silme butonu ve formu -->
-    <div class="mt-4">
-        <form method="post" action="{% url 'properties:building-detail' building.pk %}">
-            {% csrf_token %}
-            <input type="hidden" name="delete_building" value="true">
-            <button type="submit" class="btn btn-danger">Delete Building</button>
-        </form>
-    </div>
 
+        <!-- Delete button and form -->
+        <div class="mt-4 px-3">
+            <form method="post" action="{% url 'properties:building-detail' building.pk %}">
+                {% csrf_token %}
+                <input type="hidden" name="delete_building" value="true">
+                <a href="{% url 'properties:building-update' building.pk  %}" class="btn btn-success">Update</a>
+                <button type="submit" class="btn btn-danger">Delete Building</button>
+            </form>
+        </div>
     </div>
+</div>
 {% endblock %}
+
+
 
 

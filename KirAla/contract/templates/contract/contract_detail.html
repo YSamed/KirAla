@@ -1,0 +1,119 @@
+{% extends 'myadmin/base.html' %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-5">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'contract:contract-list' %}">Contract List</a></li>
+    <li class="breadcrumb-item active">Contract Detail</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="text-center">Contract Details</h2>
+        </div>
+        <div class="card-body">
+            <div class="row border-bottom pb-3">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Apartment:</dt>
+                        <dd class="col-sm-8">{{ contract.apartment }}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Tenant:</dt>
+                        <dd class="col-sm-8">{{ contract.tenant.user.get_full_name }}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row border-bottom pb-3 pt-3">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Start Date:</dt>
+                        <dd class="col-sm-8">{{ contract.start_date }}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">End Date:</dt>
+                        <dd class="col-sm-8">{{ contract.end_date }}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row border-bottom pb-3 pt-3">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Rent Amount:</dt>
+                        <dd class="col-sm-8">{{ contract.rent_amount }} ₺</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Active:</dt>
+                        <dd class="col-sm-8">{{ contract.is_active }}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row border-bottom pb-3 pt-3">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Building Address:</dt>
+                        <dd class="col-sm-8">{{ contract.apartment.building.address }}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Building Type:</dt>
+                        <dd class="col-sm-8">{{ contract.apartment.building.building_type }}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row border-bottom pb-3 pt-3">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Landlord:</dt>
+                        <dd class="col-sm-8">{{ contract.apartment.building.landlord.user.get_full_name }}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Landlord Phone Number:</dt>
+                        <dd class="col-sm-8">{{ contract.apartment.building.landlord.user.phone_number }}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row border-bottom pb-3 pt-3">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Landlord Company:</dt>
+                        <dd class="col-sm-8">{{ contract.apartment.building.landlord.company_name }}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Landlord Company Phone:</dt>
+                        <dd class="col-sm-8">{{ contract.apartment.building.landlord.business_phone }}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row border-bottom pb-3 pt-3">
+                <div class="col-md-12">
+                    <p class="text-muted">
+                        This contract is a legal agreement between {{ contract.tenant.user.get_full_name }} (Tenant) and {{ contract.apartment.building.landlord.user.get_full_name }} (Landlord) for the specified apartment.
+                        It includes details about the rental period, rent amount, and other terms agreed upon.
+                    </p>
+                </div>
+            </div>
+            <div class="row pt-5">
+                <div class="col-md-12 text-center">
+                    <a href="{% url 'contract:contract-update' pk=contract.pk %}" class="btn btn-primary">Update Contract</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
