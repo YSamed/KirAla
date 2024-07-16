@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required 
 from django.contrib import messages
 from django.contrib.auth.models import Group
 from customusers.models import Landlord, Tenant
@@ -17,7 +17,10 @@ def myadmin_login(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            if user.groups.filter(name='Landlord').exists():
+            if user.user_type == 'landlord':
+                login(request, user)
+                return redirect('myadmin:index')
+            elif user.user_type == 'admin':
                 login(request, user)
                 return redirect('myadmin:index')
             else:

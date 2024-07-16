@@ -1,0 +1,63 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active">Create User</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<style>
+    .card {
+        height: 300px;
+    }
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+    .card-title {
+        font-size: 2rem;
+    }
+</style>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Create User</h2>
+    <form method="post" >
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card bg-primary">
+                    <div class="card-body">
+                        <input type="radio" id="landlord" name="user_type" value="landlord">
+                        <label class="form-check-label ml-2" for="landlord" style="font-size: 1.5rem;"><h5 class="card-title">Landlord</h5></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card bg-info">
+                    <div class="card-body">
+                        <input type="radio" id="tenant" name="user_type" value="tenant">
+                        <label class="form-check-label ml-2" for="tenant" style="font-size: 1.5rem;"><h5 class="card-title">Tenant</h5></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card bg-success">
+                    <div class="card-body">
+                        <input type="radio" id="admin" name="user_type" value="admin">
+                        <label class="form-check-label ml-2" for="admin" style="font-size: 1.5rem;"><h5 class="card-title">Admin</h5></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">Create</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

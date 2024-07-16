@@ -1,0 +1,124 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active">Create Landlord</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header">
+                    <h3 class="text-center font-weight-light my-4">Create Landlord Account</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    {{ form.username }}
+                                    <label for="id_username">Username</label>
+                                    {% if form.username.errors %}
+                                        <div class="error-message" style="color: red;">{{ form.username.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    {{ form.email }}
+                                    <label for="id_email">Email address</label>
+                                    {% if form.email.errors %}
+                                        <div class="error-message" style="color: red;">{{ form.email.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    {{ form.first_name }}
+                                    <label for="id_first_name">First Name</label>
+                                    {% if form.first_name.errors %}
+                                        <div class="error-message" style="color: red;">{{ form.first_name.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    {{ form.last_name }}
+                                    <label for="id_last_name">Last Name</label>
+                                    {% if form.last_name.errors %}
+                                        <div class="error-message" style="color: red;">{{ form.last_name.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    {{ form.phone_number }}
+                                    <label for="id_phone_number">Phone Number</label>
+                                    {% if form.phone_number.errors %}
+                                        <div class="error-message" style="color: red;">{{ form.phone_number.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    {{ form.business_phone }}
+                                    <label for="id_business_phone">Business Phone</label>
+                                    {% if form.business_phone.errors %}
+                                        <div class="error-message" style="color: red;">{{ form.business_phone.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form.company_name }}
+                            <label for="id_company_name">Company Name</label>
+                            {% if form.company_name.errors %}
+                                <div class="error-message" style="color: red;">{{ form.company_name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form.password1 }}
+                            <label for="id_password1">Password</label>
+                            {% if form.password1.errors %}
+                                <div class="error-message" style="color: red;">{{ form.password1.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form.password2 }}
+                            <label for="id_password2">Confirm Password</label>
+                            {% if form.password2.errors %}
+                                <div class="error-message" style="color: red;">{{ form.password2.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mt-4 mb-0">
+                            <button class="btn btn-primary btn-block" type="submit">Create Landlord Account</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small"><a href="{% url 'myadmin:index' %}">Cancel and go back to Dashboard</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

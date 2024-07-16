@@ -1,7 +1,6 @@
 {% extends 'myadmin/base.html' %}
 {% load static %}
 
-
 {% block content %}
 <main>
     <div class="container-fluid px-4">
@@ -22,45 +21,54 @@
         {% endif %}
 
         <div class="row">
-            <div class="col-xl-4 col-md-6">
-                <div class="card bg-primary text-white mb-4">
-                    <div class="card-body">Profile</div>
+            <div class="col-xl-6 col-md-6">
+                <div class="card bg-warning text-white mb-4 d-flex justify-content-center align-items-center" style="height: 300px;">
+                    <div class="card-body text-center">
+                        <h1 class="card-title">Profile</h1>
+                        <p class="card-text">Manage your profile settings.</p>
+                    </div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
                         <a class="small text-white stretched-link" href="{% url 'myadmin:myadmin_update' %}">View Profile</a>
                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                     </div>
                 </div>
             </div>
-
-    <div class="row row-cols-5 row-cols-md-3 g-3 mt-5">
-        <div class="col">
-            <div class="card ">
-                <h3 class="card-title">Tenant List</h3>
-                <img src="{% static 'images/index/123.jpg' %}" class="card-img-top" alt="..." style="width: 100%; height: 100%;">
-                <div class="card-footer bg-transparent d-flex align-items-center justify-content-between">
-                    <a class="btn btn-primary stretched-link" href="{% url 'myadmin:myadmin_update' %}">View Profile <i class="fas fa-angle-right ms-1"></i></a>
+            <div class="col-xl-6 col-md-6">
+                <div class="card bg-success text-white mb-4 d-flex justify-content-center align-items-center" style="height: 300px;">
+                    <div class="card-body text-center">
+                        <h1 class="card-title">Building List</h1>
+                        <p class="card-text">Manage your building listings.</p>
+                    </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="{% url 'properties:building-list' %}">View</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
                 </div>
             </div>
-        </div>
- 
-
-
-        <div class="col">
-            <div class="card">
-                <h3 class="card-title">Tenant List</h3>
-                <img src="{% static 'images/index/123.jpg' %}" class="card-img-top" alt="..." style="width: 100%; height: 100%;">
-                <div class="card-footer bg-transparent d-flex align-items-center justify-content-between">
-                    <a class="btn btn-primary stretched-link" href="{% url 'myadmin:myadmin_update' %}">View Profile <i class="fas fa-angle-right ms-1"></i></a>
+            
+            <div class="col-xl-6 col-md-6">
+                <div class="card bg-primary text-white mb-4 d-flex justify-content-center align-items-center" style="height: 300px;">
+                    <div class="card-body text-center">
+                        <h1 class="card-title">Contracts List</h1>
+                        <p class="card-text">Manage your contract listings.</p>
+                    </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="{% url 'contract:contract-list' %}">View</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col">
-            <div class="card">
-                <h3 class="card-title">Tenant List</h3>
-                <img src="{% static 'images/index/123.jpg' %}" class="card-img-top" alt="..." style="width: 100%; height: 100%;">
-                <div class="card-footer bg-transparent d-flex align-items-center justify-content-between">
-                    <a class="btn btn-primary stretched-link" href="{% url 'myadmin:myadmin_update' %}">View Profile <i class="fas fa-angle-right ms-1"></i></a>
+            
+            <div class="col-xl-6 col-md-6">
+                <div class="card bg-danger text-white mb-4 d-flex justify-content-center align-items-center" style="height: 300px;">
+                    <div class="card-body text-center">
+                        <h1 class="card-title">Tenants List</h1>
+                        <p class="card-text">Manage your profile settings.</p>
+                    </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="{% url 'myadmin:tenant_list' %}">View Profile</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
                 </div>
             </div>
         </div>
