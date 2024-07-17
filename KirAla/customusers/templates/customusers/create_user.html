@@ -27,7 +27,16 @@
 
 <div class="container mt-5">
     <h2 class="mb-4 text-center">Create User</h2>
-    <form method="post" >
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-4 col-md-6 mb-4">
@@ -43,14 +52,6 @@
                     <div class="card-body">
                         <input type="radio" id="tenant" name="user_type" value="tenant">
                         <label class="form-check-label ml-2" for="tenant" style="font-size: 1.5rem;"><h5 class="card-title">Tenant</h5></label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card bg-success">
-                    <div class="card-body">
-                        <input type="radio" id="admin" name="user_type" value="admin">
-                        <label class="form-check-label ml-2" for="admin" style="font-size: 1.5rem;"><h5 class="card-title">Admin</h5></label>
                     </div>
                 </div>
             </div>

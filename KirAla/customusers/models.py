@@ -7,7 +7,6 @@ class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
         ('landlord', 'Landlord'),
         ('tenant', 'Tenant'),
-        ('admin', 'Admin'),
     )
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='tenant')
 
@@ -20,6 +19,7 @@ class Landlord(models.Model):
     company_name = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)  # Yönetici (admin) yetkisi alanı
 
     def __str__(self):
         return self.user.username

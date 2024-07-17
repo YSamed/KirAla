@@ -1,7 +1,5 @@
 from django import forms
-from .models import Contract
-from properties.models import Apartment
-from customusers.models import Tenant
+from .models import Tenant,Apartment ,Contract
 
 class ContractForm(forms.ModelForm):
     class Meta:
@@ -17,9 +15,21 @@ class ContractForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        self.landlord = kwargs.pop('landlord', None)
         super().__init__(*args, **kwargs)
         
         if not self.instance.pk:
             existing_contracts = Contract.objects.values_list('apartment', flat=True)
             self.fields['apartment'].queryset = Apartment.objects.exclude(pk__in=existing_contracts)
-        self.fields['tenant'].queryset = Tenant.objects.all() 
+        self.fields['tenant'].queryset = Tenant.objects.all()
+
+    def save(self, commit=True):
+        contract = super().save(commit=False)
+        
+        if self.landlord:
+            contract.landlord = self.landlord
+        
+        if commit:
+            contract.save()
+        
+        return contract

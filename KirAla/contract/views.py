@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from datetime import datetime
-from .models import Contract, Apartment ,Building
+from .models import Contract, Apartment
 from .forms import ContractForm 
+
 
 class ContractListView(ListView):
     model = Contract
@@ -12,7 +13,9 @@ class ContractListView(ListView):
     context_object_name = 'contracts'
 
     def get_queryset(self):
-        return Contract.objects.filter(is_active=True,is_deleted=False)  
+        landlord = self.request.user.landlord 
+
+        return Contract.objects.filter(landlord=landlord, is_active=True, is_deleted=False)
 
 class ContractDetailView(DetailView):
     model = Contract
@@ -22,10 +25,10 @@ class ContractDetailView(DetailView):
     def post(self, request, *args, **kwargs):
         if 'soft_delete' in request.POST:
             contract = self.get_object()
-            contract.is_deleted = True  # veya False, isteğinize bağlı olarak
+            contract.is_deleted = True
             contract.save()
             messages.success(request, 'Contract has been deleted successfully.')
-            return redirect('contract:contract-list')  # Silinen sözleşmelerin listesi
+            return redirect('contract:contract-list') 
         return super().post(request, *args, **kwargs)
 
 class ContractCreateView(CreateView):
@@ -35,17 +38,17 @@ class ContractCreateView(CreateView):
     success_url = reverse_lazy('contract:contract-list')
 
     def form_valid(self, form):
-        # Check if there is already a contract for this apartment and tenant
-        apartment = form.cleaned_data['apartment']
-        tenant = form.cleaned_data['tenant']
-        
-        existing_contract = Contract.objects.filter(apartment=apartment, tenant=tenant).exists()
-        if existing_contract:
-            messages.error(self.request, 'A contract already exists for this apartment and tenant.')
-            return self.form_invalid(form)
-        
+        form.instance.landlord = self.request.user.landlord
+        form.fields['apartment'].queryset = Apartment.objects.filter(landlord=self.request.user.landlord)
+        end_date = form.cleaned_data['end_date']
+        if end_date < datetime.today().date():
+            form.instance.is_active = False
+        else:
+            form.instance.is_active = True
         messages.success(self.request, 'Contract has been created successfully.')
         return super().form_valid(form)
+
+
 
 class ContractUpdateView(UpdateView):
     model = Contract
@@ -75,8 +78,9 @@ class ContractHistoryView(ListView):
     context_object_name = 'contracts'
 
     def get_queryset(self):
-        return Contract.objects.filter(is_active=False)
-
+        today = datetime.today().date()
+        return Contract.objects.filter(end_date__lt=today, is_deleted=False)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['today'] = datetime.today().date()

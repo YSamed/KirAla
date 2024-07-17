@@ -114,13 +114,17 @@
                     <td>{{ apartment.parking|yesno:"Yes,No" }}</td>
                     <td><img src="{{ apartment.image.url }}" alt="Apartment Image" style="max-height: 100px;"></td>
                     <td>
-                        <a href="{% url 'properties:apartment-detail' apartment.pk %}" class="btn btn-primary btn-sm">View Details</a>
-                        <div class="mt-2">
+                        <div class="btn-group">
+                            <a href="{% url 'properties:apartment-detail' apartment.pk %}" class="btn btn-primary btn-sm me-2">View Details</a>
+                            
                             <form method="post" action="{% url 'properties:building-detail' building.pk %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="delete_apartment" value="{{ apartment.pk }}">
-                                <a href="{% url 'properties:apartment-update' apartment.pk %}" class="btn btn-success btn-sm">Update</a>
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                
+                                <div class="btn-group">
+                                    <a href="{% url 'properties:apartment-update' apartment.pk %}" class="btn btn-success btn-sm me-2">Update</a>
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </div>
                             </form>
                         </div>
                     </td>

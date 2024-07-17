@@ -99,13 +99,33 @@ def myadmin_password_change(request):
     
     return render(request, 'myadmin/password_change.html', {'form': form})
 
+
 @login_required
 def tenant_list(request):
-    if request.user.groups.filter(name='Landlord').exists():
+    tenants = Tenant.objects.none()  
+
+    if hasattr(request.user, 'landlord'):
         landlord = request.user.landlord
         tenants = Tenant.objects.filter(landlord=landlord)
+        print(f"Landlord: {landlord}, Tenants count: {tenants.count()}")
     else:
-        tenants = Tenant.objects.none()
+        print("User is not a landlord.")
+
+    context = {
+        'tenants': tenants
+    }
+
+    return render(request, 'myadmin/tenant_list.html', context)
+
+
+@login_required
+def lanflord_list(request):
+    tenants = Landlord.objects.none()  
+
+    if hasattr(request.user, 'landlord'):
+        landlord = request.user.landlord
+    else:
+        print("User is not a landlord.")
 
     context = {
         'tenants': tenants

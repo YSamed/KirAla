@@ -41,10 +41,10 @@ class BuildingDetailView(DetailView):
             apartment = get_object_or_404(Apartment, pk=apartment_pk)
             apartment.is_deleted = True
             apartment.save()
-            messages.success(request, 'Apartment has been deleted successfully.')
+            messages.success(request, 'Apartment has been marked as deleted.')
             return redirect('properties:building-detail', pk=building.pk)
 
-        return super().post(request, *args, **kwargs)
+        return redirect('properties:building-detail', pk=building.pk)
 
 class BuildingUpdateView(UpdateView):
     model = Building
@@ -57,7 +57,6 @@ class BuildingUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('properties:building-detail', kwargs={'pk': self.object.pk})
-
 
 
 class ApartmentListView(ListView):
