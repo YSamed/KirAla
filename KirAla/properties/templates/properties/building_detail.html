@@ -114,9 +114,11 @@
                     <td>{{ apartment.parking|yesno:"Yes,No" }}</td>
                     <td><img src="{{ apartment.image.url }}" alt="Apartment Image" style="max-height: 100px;"></td>
                     <td>
+
                         <div class="btn-group">
                             <a href="{% url 'properties:apartment-detail' apartment.pk %}" class="btn btn-primary btn-sm me-2">View Details</a>
-                            
+
+                            {% if perms.properties.change_apartment %}
                             <form method="post" action="{% url 'properties:building-detail' building.pk %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="delete_apartment" value="{{ apartment.pk }}">
@@ -126,7 +128,9 @@
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                 </div>
                             </form>
+                            {% endif %}
                         </div>
+
                     </td>
                 </tr>
                 {% endif %}
@@ -141,23 +145,24 @@
             
         </table>
 
+        {% if perms.properties.add_apartment %}
         <div class="mt-5 px-3">
             <a href="{% url 'properties:apartment-create' building.pk %}" class="btn btn-success">Add New Apartment</a>
         </div>
-
-        <!-- Delete button and form -->
+        
         <div class="mt-4 px-3">
             <form method="post" action="{% url 'properties:building-detail' building.pk %}">
                 {% csrf_token %}
-                <input type="hidden" name="delete_building" value="true">
                 <a href="{% url 'properties:building-update' building.pk  %}" class="btn btn-success">Update</a>
+                <input type="hidden" name="delete_building" value="true">
                 <button type="submit" class="btn btn-danger">Delete Building</button>
             </form>
         </div>
+        {% endif %}
+        
     </div>
 </div>
 {% endblock %}
-
 
 
 

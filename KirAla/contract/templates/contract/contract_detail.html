@@ -108,9 +108,11 @@
                 </div>
             </div>
             <div class="row pt-5">
+                {% if perms.contract.change_contract %}
                 <div class="col-md-12 text-center">
                     <a href="{% url 'contract:contract-update' pk=contract.pk %}" class="btn btn-primary">Update Contract</a>
                 </div>
+                {% endif %}
             </div>
 
         </div>

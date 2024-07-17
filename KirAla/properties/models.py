@@ -2,12 +2,12 @@ from django.db import models
 from customusers.models import Landlord 
 
 
+
 class Building(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
     landlord = models.ForeignKey(Landlord, on_delete=models.CASCADE, related_name='buildings')
 
-    
     BUILDING_TYPES = [
         ('apart', 'Apart'),
         ('apartment', 'Apartman'),
@@ -21,11 +21,13 @@ class Building(models.Model):
     building_age = models.PositiveIntegerField()
     floors = models.PositiveIntegerField()
     
-    rental_apartment_count = models.PositiveIntegerField(default=0) ### UNUTMA
+    rental_apartment_count = models.PositiveIntegerField(default=0)
     is_deleted = models.BooleanField(default=False)
     
     def __str__(self):
         return self.name
+
+
 
 
 class Apartment(models.Model):

@@ -118,17 +118,10 @@ def tenant_list(request):
     return render(request, 'myadmin/tenant_list.html', context)
 
 
-@login_required
-def lanflord_list(request):
-    tenants = Landlord.objects.none()  
-
-    if hasattr(request.user, 'landlord'):
-        landlord = request.user.landlord
-    else:
-        print("User is not a landlord.")
+def landlord_list(request):
+    landlords = Landlord.objects.all()
 
     context = {
-        'tenants': tenants
+        'landlords' : landlords
     }
-
-    return render(request, 'myadmin/tenant_list.html', context)
+    return render(request,'myadmin/landlord_list.html', context)

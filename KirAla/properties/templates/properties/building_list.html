@@ -50,9 +50,12 @@
             {% endfor %}
         </tbody>
     </table>
-    <div class="mt-5">
-        <a href="{% url 'properties:building-create' %}" class="btn btn-success">Add New Building</a>
-    </div>
+   
+    {% if perms.properties.add_building %}
+    <a href="{% url 'properties:building-create' %}" class="btn btn-primary">Add Building</a>
+    {% endif %}
+
+
 </div>
 </div>
 

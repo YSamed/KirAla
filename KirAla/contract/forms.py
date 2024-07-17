@@ -4,14 +4,14 @@ from .models import Tenant,Apartment ,Contract
 class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
-        fields = ['apartment', 'tenant', 'start_date', 'end_date', 'rent_amount', 'is_active']
+        fields = ['apartment', 'tenant', 'start_date', 'end_date', 'rent_amount']
         widgets = {
             'apartment': forms.Select(attrs={'class': 'form-control'}),
             'tenant': forms.Select(attrs={'class': 'form-control'}),
             'start_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'end_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'rent_amount': forms.NumberInput(attrs={'class': 'form-control'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'})
+
         }
 
     def __init__(self, *args, **kwargs):
@@ -20,7 +20,11 @@ class ContractForm(forms.ModelForm):
         
         if not self.instance.pk:
             existing_contracts = Contract.objects.values_list('apartment', flat=True)
-            self.fields['apartment'].queryset = Apartment.objects.exclude(pk__in=existing_contracts)
+            if self.landlord:
+                self.fields['apartment'].queryset = Apartment.objects.filter(landlord=self.landlord).exclude(pk__in=existing_contracts)
+            else:
+                self.fields['apartment'].queryset = Apartment.objects.exclude(pk__in=existing_contracts)
+        
         self.fields['tenant'].queryset = Tenant.objects.all()
 
     def save(self, commit=True):

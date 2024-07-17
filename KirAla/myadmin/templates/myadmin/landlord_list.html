@@ -1,0 +1,48 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'myadmin:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active">Landlords List</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Landlords List</h1>
+
+    <div class="card-body">
+        <table id="datatablesSimple" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                
+                    <th>Business Phone</th>
+                    <th>Company Name</th>
+                    <th>Address</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for landlord in landlords %}
+                <tr>
+                    <td>{{ landlord.user.username }}</td>
+                    <td>{{ landlord.user.email }}</td>
+                 
+                    <td>{{ landlord.business_phone }}</td>
+                    <td>{{ landlord.company_name }}</td>
+                    <td>{{ landlord.address }}</td>
+                    <td>{{ landlord.user.first_name }}</td>
+                    <td>{{ landlord.user.last_name }}</td>
+                    <td>{{ landlord.phone_number }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

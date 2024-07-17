@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect
 from .models import Building, Apartment , Landlord
 from .forms import BuildingForm, ApartmentForm
+from django.core.exceptions import PermissionDenied
+
 
 
 class BuildingListView(ListView):
@@ -19,6 +21,11 @@ class BuildingCreateView(CreateView):
     form_class = BuildingForm
     template_name = 'properties/building_create.html'
     success_url = reverse_lazy('properties:building-list')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('properties.add_building'):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         landlord = Landlord.objects.get(user=self.request.user)
@@ -42,21 +49,27 @@ class BuildingDetailView(DetailView):
             apartment.is_deleted = True
             apartment.save()
             messages.success(request, 'Apartment has been marked as deleted.')
-            return redirect('properties:building-detail', pk=building.pk)
-
+        
         return redirect('properties:building-detail', pk=building.pk)
+
 
 class BuildingUpdateView(UpdateView):
     model = Building
     form_class = BuildingForm
     template_name = 'properties/building_update.html'
+    success_url = reverse_lazy('properties:building-list') 
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('properties.change_building'):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         messages.success(self.request, 'Building has been updated successfully.')
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse_lazy('properties:building-detail', kwargs={'pk': self.object.pk})
+
+    
 
 
 class ApartmentListView(ListView):
@@ -72,6 +85,15 @@ class ApartmentCreateView(CreateView):
     form_class = ApartmentForm
     template_name = 'properties/apartment_create.html'
     success_url = reverse_lazy('properties:building-list')
+    permission_required = 'properties.add_apartment'
+
+    def dispatch(self, request, *args, **kwargs):
+        building_id = self.kwargs.get('pk')
+        if not request.user.has_perm('properties.add_apartment'):
+            raise PermissionDenied
+        if not Building.objects.filter(pk=building_id, landlord__user=request.user).exists():
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         building_id = self.kwargs.get('pk')
@@ -106,6 +128,12 @@ class ApartmentUpdateView(UpdateView):
     model = Apartment
     form_class = ApartmentForm
     template_name = 'properties/apartment_update.html'
+    permission_required = 'properties.change_apartment'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('properties.change_apartment'):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         instance = form.save(commit=False)

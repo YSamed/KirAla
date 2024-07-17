@@ -57,25 +57,29 @@
                         <td>
                             <div class="d-flex">
                                 <a href="{% url 'contract:contract-detail' contract.pk %}" class="btn btn-info btn-sm me-2">Detail</a>
+                                {% if perms.contract.change_contract %}
                                 <a href="{% url 'contract:contract-update' contract.pk %}" class="btn btn-primary btn-sm me-2">Update</a>
                                 {% if not contract.is_deleted %}
-                                    <form method="post" action="{% url 'contract:contract-detail' contract.pk %}" class="me-2">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="soft_delete" value="true">
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                    </form>
+                                <form method="post" action="{% url 'contract:contract-detail' contract.pk %}" class="me-2">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="soft_delete" value="true">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                                {% endif %}
                                 {% endif %}
                             </div>
                         </td>
                         
-                
-                    
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <div class="mt-5">
-            <a href="{% url 'contract:contract-create' %}" class="btn btn-success">Create Contract</a>
+                        
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="mt-5">
+                {% if perms.contract.add_contract %}
+                <a href="{% url 'contract:contract-create' %}" class="btn btn-success">Create Contract</a>
+                {% endif %}
         </div>
     </div>
 </div>

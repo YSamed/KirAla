@@ -4,7 +4,8 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from datetime import datetime
 from .models import Contract, Apartment
-from .forms import ContractForm 
+from .forms import ContractForm
+from django.core.exceptions import PermissionDenied 
 
 
 class ContractListView(ListView):
@@ -37,24 +38,35 @@ class ContractCreateView(CreateView):
     template_name = 'contract/contract_create.html'
     success_url = reverse_lazy('contract:contract-list')
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('contract.add_contract'):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
-        form.instance.landlord = self.request.user.landlord
-        form.fields['apartment'].queryset = Apartment.objects.filter(landlord=self.request.user.landlord)
+        landlord = self.request.user.landlord
+        form.instance.landlord = landlord
+
         end_date = form.cleaned_data['end_date']
         if end_date < datetime.today().date():
             form.instance.is_active = False
         else:
             form.instance.is_active = True
+
         messages.success(self.request, 'Contract has been created successfully.')
         return super().form_valid(form)
-
-
 
 class ContractUpdateView(UpdateView):
     model = Contract
     form_class = ContractForm
     template_name = 'contract/contract_update.html'
     success_url = reverse_lazy('contract:contract-list')
+
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('contract.change_contract'):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
