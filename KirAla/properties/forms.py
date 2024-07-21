@@ -1,11 +1,10 @@
 from django import forms
 from .models import Building , Apartment
 
-# Building Form
+
 class BuildingForm(forms.ModelForm):
     FLOOR_CHOICES = [(i, str(i)) for i in range(1, 51)]
     floors = forms.ChoiceField(choices=FLOOR_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
-    
     BUILDING_AGE_CHOICES = [(i, str(i)) for i in range(1, 51)]
     building_age = forms.ChoiceField(choices=BUILDING_AGE_CHOICES, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     
@@ -34,7 +33,6 @@ class BuildingForm(forms.ModelForm):
         return building_age
 
 
-# Apartment Form
 class ApartmentForm(forms.ModelForm):
     image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': False}), required=False)
 

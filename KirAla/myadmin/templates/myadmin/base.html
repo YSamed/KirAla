@@ -60,7 +60,9 @@
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{% url 'properties:building-list' %}">Building List</a>
+                                    {% if perms.properties.add_building %}
                                     <a class="nav-link" href="{% url 'properties:building-create' %}">Building Created</a>
+                                    {% endif %}
                                 </nav>
                             </div>
 
@@ -73,7 +75,9 @@
                             <div class="collapse" id="collapseContracts" aria-labelledby="headingContracts" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{% url 'contract:contract-list' %}">Contract List</a>
+                                    {% if perms.contract.add_contract %}
                                     <a class="nav-link" href="{% url 'contract:contract-create' %}">Create Contract</a>
+                                    {% endif %}
                                     <a class="nav-link" href="{% url 'contract:contract-history' %}">Create History</a>
                                 </nav>
                             </div>
@@ -83,12 +87,25 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Tenants List
                             </a>
-                            
-                            <div class="sb-sidenav-menu-heading">User</div>
-                            <a class="nav-link" href="{% url 'customusers:create-user' %}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                                Create User
+                            <div class="sb-sidenav-menu-heading">Landlords</div>
+                            <a class="nav-link" href="{% url 'myadmin:landlord_list' %}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Landlords List
                             </a>
+                            
+                            {% if perms.customusers.add_landlord %}
+                            <div class="sb-sidenav-menu-heading">User</div>
+                            <a class="nav-link" href="{% url 'customusers:create-landlord' %}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                                Create Landlord
+                            </a>
+                            {% endif %}
+                            {% if perms.customusers.add_tenant %}
+                            <a class="nav-link" href="{% url 'customusers:create-tenant' %}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                                Create Tenant
+                            </a>
+                            {% endif %}
                             
                         </div>
                     </div>
@@ -105,7 +122,6 @@
                     {% block breadcrumb %}
                     {% endblock %}
                     {% block content %}
-                    <!-- Content goes here -->
                     {% endblock %}
                 </div>
             </main>
