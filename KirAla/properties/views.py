@@ -52,7 +52,6 @@ class BuildingDetailView(DetailView):
         
         return redirect('properties:building-detail', pk=building.pk)
 
-
 class BuildingUpdateView(UpdateView):
     model = Building
     form_class = BuildingForm
@@ -68,8 +67,6 @@ class BuildingUpdateView(UpdateView):
         messages.success(self.request, 'Building has been updated successfully.')
         return super().form_valid(form)
 
-
-    
 
 
 class ApartmentListView(ListView):

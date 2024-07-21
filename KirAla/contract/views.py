@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from datetime import datetime
-from .models import Contract, Apartment
+from .models import Contract 
 from .forms import ContractForm
 from django.core.exceptions import PermissionDenied 
 
@@ -43,6 +43,11 @@ class ContractCreateView(CreateView):
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['landlord'] = self.request.user.landlord
+        return kwargs
+
     def form_valid(self, form):
         landlord = self.request.user.landlord
         form.instance.landlord = landlord
@@ -62,7 +67,6 @@ class ContractUpdateView(UpdateView):
     template_name = 'contract/contract_update.html'
     success_url = reverse_lazy('contract:contract-list')
 
-
     def dispatch(self, request, *args, **kwargs):
         if not request.user.has_perm('contract.change_contract'):
             raise PermissionDenied
@@ -70,19 +74,18 @@ class ContractUpdateView(UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        contract = self.get_object()
-        kwargs['initial'] = {'apartment': contract.apartment} 
+        kwargs['landlord'] = self.request.user.landlord
         return kwargs
 
     def form_valid(self, form):
         contract = form.save(commit=False)
+        contract.apartment = self.get_object().apartment  #
         contract.save()
-
         messages.success(self.request, 'Contract has been updated successfully.')
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('properties:building-detail', kwargs={'pk': self.object.apartment.building.pk})
+        return reverse_lazy('contract:contract-list')
 
 class ContractHistoryView(ListView):
     model = Contract

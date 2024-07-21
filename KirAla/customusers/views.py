@@ -6,8 +6,6 @@ from .models import Landlord
 from django.core.exceptions import PermissionDenied
 
 
-
-
 class LandlordCreateView(View):
     def get(self, request):
         if request.user.is_authenticated:

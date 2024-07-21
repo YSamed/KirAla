@@ -60,14 +60,6 @@
                     {% endfor %}
                 </div>
                 
-                <div class="mb-3 form-check">
-                    <label for="id_is_active" class="form-check-label">Is Active:</label>
-                    {{ form.is_active }}
-                    {% for error in form.is_active.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
-                    {% endfor %}
-                </div>
-                
                 <button type="submit" class="btn btn-primary">
                         Update Contract
                 </button>

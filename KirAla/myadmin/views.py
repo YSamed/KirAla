@@ -5,7 +5,6 @@ from django.contrib import messages
 from django.contrib.auth.models import Group
 from customusers.models import Landlord, Tenant
 from customusers.forms import CustomUserRegistrationForm, CustomUserUpdateForm, LandlordForm, TenantForm, CustomPasswordChangeForm
-from django.contrib.auth.forms import PasswordChangeForm
 
 @login_required
 def index(request):
@@ -100,6 +99,7 @@ def myadmin_password_change(request):
     return render(request, 'myadmin/password_change.html', {'form': form})
 
 
+
 @login_required
 def tenant_list(request):
     tenants = Tenant.objects.none()  
@@ -117,7 +117,7 @@ def tenant_list(request):
 
     return render(request, 'myadmin/tenant_list.html', context)
 
-
+@login_required
 def landlord_list(request):
     landlords = Landlord.objects.all()
 
